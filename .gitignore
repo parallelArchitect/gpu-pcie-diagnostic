@@ -1,0 +1,15 @@
+# Build artifacts
+pcie_diag
+*.o
+
+# Runtime results
+results/
+
+# Nsight / profiling
+*.nsys-rep
+*.sqlite
+*.qdrep
+
+# Editor / OS noise
+*~
+.DS_Store
