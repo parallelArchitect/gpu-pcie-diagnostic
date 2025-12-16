@@ -94,6 +94,9 @@ System Signals (informational)
 - NVIDIA GPU with a supported driver
 - CUDA Toolkit (for `nvcc`)
 - NVML development library (`-lnvidia-ml`)
+
+## Platform Compatibility Note
+
 - Linux operating system (tested on Ubuntu 20.04+)
 
 
