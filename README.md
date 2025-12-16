@@ -97,7 +97,8 @@ System Signals (informational)
 
 ## Platform Compatibility Note
 
-- Linux operating system (tested on Ubuntu 20.04+)
+- Linux operating system
+- Tested on **Ubuntu 24.04.3 LTS**
 
 
 ## Permissions & Logging Notes
