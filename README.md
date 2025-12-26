@@ -1,4 +1,3 @@
-
 # GPU PCIe Diagnostic & Bandwidth Analysis
 
 A deterministic command-line tool for validating GPU PCIe link health, bandwidth, and real-world PCIe utilization using only observable hardware data.
@@ -12,7 +11,6 @@ No BIOS assumptions.
 No “magic” optimizations. 
 
 Only measurable link state, copy throughput, and hardware counters.
-
 
 ## What This Tool Does
 
@@ -28,7 +26,6 @@ It measures and reports directly from GPU hardware:
 
 The tool does not attempt to tune, fix, or modify system configuration.
 
-
 ## Verdict Semantics
 
 - **OK** — The negotiated PCIe link and measured throughput are consistent with expected behavior.
@@ -36,7 +33,6 @@ The tool does not attempt to tune, fix, or modify system configuration.
 - **UNDERPERFORMING** — The full link is negotiated, but sustained bandwidth is significantly lower than expected.
 
 Verdicts are rule-based and derived only from measured data.
-
 
 ## Why This Tool Exists
 
@@ -50,12 +46,12 @@ Modern systems frequently exhibit PCIe issues that are difficult to diagnose:
 
 This tool exists to:
 
-1. **Reproducible PCIe diagnostic baseline**
+1. **Reproducible PCIe diagnostic baseline** 
 2. **Hardware-level proof** of PCIe behavior 
-3. **Isolate link negotiation** from kernel/workload effects
-
+3. **Isolate link negotiation** from kernel/workload effects 
 
 ## Example Output
+
 ```text
 GPU PCIe Diagnostic & Bandwidth Analysis v2.7.4
 GPU:   NVIDIA GeForce GTX 1080
@@ -89,6 +85,7 @@ System Signals (informational)
   ASPM Policy (sysfs string): [default] performance powersave powersupersave
   IOMMU: Platform default (no explicit flags)
 ```
+
 ## Requirements
 
 - NVIDIA GPU with a supported driver
@@ -100,18 +97,15 @@ System Signals (informational)
 - Linux operating system
 - Tested on **Ubuntu 24.04.3 LTS**
 
-
 ## Permissions & Logging Notes
 
-On some Linux systems, PCIe and NVML diagnostics require elevated privileges due to kernel and driver access controls.
-If log files were previously created using `sudo`, the results directory may become root-owned. In that case, subsequent runs may prompt for a password when appending logs.
+On some Linux systems, PCIe and NVML diagnostics require elevated privileges due to kernel and driver access controls. If log files were previously created using `sudo`, the results directory may become root-owned. In that case, subsequent runs may prompt for a password when appending logs.
 
 To restore normal user access to the results directory:
 
 ```bash
 sudo chown -R $USER:$USER results/
 ```
-
 
 ## Build
 
@@ -121,45 +115,45 @@ Using the provided Makefile:
 make
 ```
 
-
 Or manually, with nvcc:
 
 ```bash
 nvcc -O3 -Xnvlink=-w pcie_diagnostic_pro.cu -o pcie_diag -lnvidia-ml -lpthread
 ```
 
-
 ## Usage
 
 Basic diagnostic (1 GiB test):
 
+```bash
 ./pcie_diag 1024
+```
 
+## Logging
 
 Add logging (CSV, JSON, or both):
 
-./pcie_diag 1024 --log --csv 
-./pcie_diag 1024 --log --json 
-./pcie_diag 1024 --log --csv --json 
+```bash
+./pcie_diag 1024 --log --csv
+./pcie_diag 1024 --log --json
+./pcie_diag 1024 --log --csv --json
+```
 
 Logs are written to:
 
 - `results/csv/pcie_log.csv`
 - `results/json/pcie_sessions.json`
 
-
 ## Extended Telemetry Window
 
-./pcie_diag 1024 --duration-ms 8000 
-- improves measurement stability
+- Improves measurement stability.
 
+```bash
+./pcie_diag 1024 --duration-ms 8000
+```
 
-## Optional Integrity Counters
-
-./pcie_diag 1024 --integrity 
 - Enables read-only inspection of PCIe Advanced Error Reporting (AER) counters via Linux sysfs, if exposed by the platform.
 - If counters are unavailable on the platform, integrity checks are automatically skipped with clear reporting.
-
 
 ## Multi-GPU Logging Behavior
 
@@ -167,49 +161,44 @@ When running in multi-GPU mode (`--all-gpus`), each detected GPU is evaluated in
 
 - One result row (CSV) or object (JSON) is emitted per GPU per run.
 - Each entry includes device UUID and PCIe BDF for unambiguous attribution.
-- Multi-GPU configurations have not been exhaustively validated on all platforms. 
+- Multi-GPU configurations have not been exhaustively validated on all platforms.
 - Users are encouraged to verify results on their specific hardware.
 
 Example:
 
 ```bash
 ./pcie_diag 1024 --all-gpus --log --csv
-./pcie_diag 1024 --all-gpus --log --json 
+./pcie_diag 1024 --all-gpus --log --json
 ./pcie_diag 1024 --gpu-index 1     # Target single GPU by index
-```  
-
+```
 
 ## Logging & Reproducibility
 
-- CSV and JSON logs include stable device identifiers 
-- Device UUIDs are reported at runtime via NVML for consistent identification across runs 
-- UUIDs shown in documentation are intentionally **redacted** 
-- Logs are append-friendly for time-series analysis and automated monitoring 
-
+- CSV and JSON logs include stable device identifiers.
+- Device UUIDs are reported at runtime via NVML for consistent identification across runs.
+- UUIDs shown in documentation are intentionally **redacted**.
+- Logs are append-friendly for time-series analysis and automated monitoring.
 
 ## Scope & Limitations
 
-- This tool evaluates PCIe transport behavior only 
-- It does not measure kernel performance or application-level efficiency 
-- It does not modify BIOS, firmware, registry, or PCIe configuration 
-- It reports observable facts only and never infers beyond available data 
-
+- This tool evaluates PCIe transport behavior only.
+- It does not measure kernel performance or application-level efficiency.
+- It does not modify BIOS, firmware, registry, or PCIe configuration.
+- It reports observable facts only and never infers beyond available data.
 
 ## Validation
 
-- Memcpy timing and PCIe behavior were cross-validated during development using Nsight Systems. 
-- Nsight is not required to use this tool and is referenced only as an external correctness check. 
-
+- Memcpy timing and PCIe behavior were cross-validated during development using Nsight Systems.
+- Nsight is not required to use this tool and is referenced only as an external correctness check.
 
 ## Author
- 
+
 Author: Joe McLaren (Human–AI collaborative engineering) 
 https://github.com/parallelArchitect
 
-
 ## License
 
-MIT License 
+MIT License
 
 Copyright (c) 2025 Joe McLaren
 
@@ -230,7 +219,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 SOFTWARE.
-
 
 ## References
 
