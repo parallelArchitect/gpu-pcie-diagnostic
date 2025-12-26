@@ -115,19 +115,28 @@ sudo chown -R $USER:$USER results/
 
 ## Build
 
+Using the provided Makefile:
+
+```bash
 make
+```
 
-or manually:
 
-nvcc -O3 pcie_diagnostic_pro.cu -lnvidia-ml -Xcompiler -pthread -o pcie_diag
+Or manually, with nvcc:
+
+```bash
+nvcc -O3 -Xnvlink=-w pcie_diagnostic_pro.cu -o pcie_diag -lnvidia-ml -lpthread
+```
 
 
 ## Usage
 
+Basic diagnostic (1 GiB test):
+
 ./pcie_diag 1024
 
 
-## Logging
+Add logging (CSV, JSON, or both):
 
 ./pcie_diag 1024 --log --csv 
 ./pcie_diag 1024 --log --json 
