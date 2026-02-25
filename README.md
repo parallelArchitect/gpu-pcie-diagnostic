@@ -3,7 +3,7 @@
 > This project has been superseded by: 
 > https://github.com/parallelArchitect/gpu-pcie-path-validator 
 > 
-> This repository remains available for reference and basic diagnostic use cases.
+> This repository remains available for reference and diagnostic use cases.
 
 
 A deterministic command-line tool for validating GPU PCIe link health, bandwidth, and real-world PCIe utilization using only observable hardware data.
